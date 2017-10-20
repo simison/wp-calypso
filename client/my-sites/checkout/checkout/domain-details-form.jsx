@@ -94,12 +94,7 @@ export class DomainDetailsForm extends PureComponent {
 
 		this.inputRefs = {};
 		this.inputRefCallbacks = {};
-
-		// The preference is to fire an inputRef callback
-		// when the previous and next countryCodes don't match.
-		// Multiple renders triggered by formState via `this.setFormState`
-		// prevent it.
-		this.shouldFocusAddress = false;
+		this.shouldAutoFocusAddressField = false;
 	}
 
 	componentWillMount() {
@@ -203,8 +198,6 @@ export class DomainDetailsForm extends PureComponent {
 	};
 
 	handleChangeEvent = event => {
-		this.shouldFocusAddress = false;
-
 		if ( event.target.name === 'country-code' ) {
 			// Remove previous country-specific state value
 			this.formStateController.handleFieldChange( {
@@ -219,13 +212,7 @@ export class DomainDetailsForm extends PureComponent {
 				} );
 			}
 
-			// If RegionAddressFieldsets is mounted we just need to find the stored inputRef
-			const inputRef = this.inputRefs[ 'address-1' ] || null;
-			inputRef && inputRef.focus();
-
-			// but if RegionAddressFieldsets isn't mounted (because there's no valid countryCode)
-			// we tell it to focus when it next mounts
-			this.shouldFocusAddress = true;
+			this.focusAddressField();
 		}
 
 		this.formStateController.handleFieldChange( {
@@ -267,8 +254,8 @@ export class DomainDetailsForm extends PureComponent {
 
 	getFieldProps = ( name, needsChildRef ) => {
 		// if we're referencing a DOM object in a child component we need to add the `inputRef` prop
-		const ref = needsChildRef ? { inputRef: this.getInputRefCallback( name ) } : { ref: name },
-			{ form } = this.state;
+		const ref = needsChildRef ? { inputRef: this.getInputRefCallback( name ) } : { ref: name };
+		const { form } = this.state;
 
 		return {
 			name,
@@ -379,9 +366,7 @@ export class DomainDetailsForm extends PureComponent {
 	}
 
 	renderFaxField() {
-		return this.needsFax() ? (
-			<Input label={ this.props.translate( 'Fax' ) } { ...this.getFieldProps( 'fax' ) } />
-		) : null;
+		return <Input label={ this.props.translate( 'Fax' ) } { ...this.getFieldProps( 'fax' ) } />;
 	}
 
 	renderPhoneField() {
@@ -399,19 +384,19 @@ export class DomainDetailsForm extends PureComponent {
 	}
 
 	renderDomainContactDetailsFields() {
-		const { contactDetails } = this.props,
-			countryCode = ( contactDetails || {} ).countryCode;
+		const { contactDetails } = this.props;
+		const countryCode = ( contactDetails || {} ).countryCode;
 		return (
 			<div className="checkout__domain-contact-details-fields">
 				{ this.renderOrganizationField() }
 				{ this.renderEmailField() }
 				{ this.renderPhoneField() }
-				{ this.renderFaxField() }
+				{ this.needsFax() && this.renderFaxField() }
 				{ countryCode && (
 					<RegionAddressFieldsets
 						getFieldProps={ this.getFieldProps }
 						countryCode={ countryCode }
-						shouldFocusAddress={ this.shouldFocusAddress }
+						shouldAutoFocusAddressField={ this.shouldAutoFocusAddressField }
 					/>
 				) }
 				{ this.renderCountryField() }
@@ -419,7 +404,7 @@ export class DomainDetailsForm extends PureComponent {
 		);
 	}
 
-	renderDetailsForm = () => {
+	renderDetailsForm() {
 		return (
 			<form>
 				{ this.renderNameFields() }
@@ -431,7 +416,7 @@ export class DomainDetailsForm extends PureComponent {
 				{ this.renderSubmitButton() }
 			</form>
 		);
-	};
+	}
 
 	renderExtraDetailsForm( tld ) {
 		return <ExtraInfoForm tld={ tld }>{ this.renderSubmitButton() }</ExtraInfoForm>;
@@ -445,6 +430,21 @@ export class DomainDetailsForm extends PureComponent {
 		const firstErrorName = kebabCase( head( formState.getInvalidFields( this.state.form ) ).name );
 		const firstErrorRef = this.inputRefs[ firstErrorName ] || this.refs[ firstErrorName ];
 		firstErrorRef.focus();
+	}
+
+	focusAddressField() {
+		const inputRef = this.inputRefs[ 'address-1' ] || null;
+
+		if ( inputRef ) {
+			inputRef.focus();
+		} else {
+			// The preference is to fire an inputRef callback
+			// when the previous and next countryCodes don't match,
+			// rather than set a flag.
+			// Multiple renders triggered by formState via `this.setFormState`
+			// prevent it.
+			this.shouldAutoFocusAddressField = true;
+		}
 	}
 
 	handleSubmitButtonClick = event => {
@@ -467,18 +467,18 @@ export class DomainDetailsForm extends PureComponent {
 	};
 
 	recordSubmit() {
-		const errors = formState.getErrorMessages( this.state.form ),
-			tracksEventObject = reduce(
-				formState.getErrorMessages( this.state.form ),
-				( result, value, key ) => {
-					result[ `error_${ key }` ] = value;
-					return result;
-				},
-				{
-					errors_count: ( errors && errors.length ) || 0,
-					submission_count: this.state.submissionCount + 1,
-				}
-			);
+		const errors = formState.getErrorMessages( this.state.form );
+		const tracksEventObject = reduce(
+			formState.getErrorMessages( this.state.form ),
+			( result, value, key ) => {
+				result[ `error_${ key }` ] = value;
+				return result;
+			},
+			{
+				errors_count: ( errors && errors.length ) || 0,
+				submission_count: this.state.submissionCount + 1,
+			}
+		);
 
 		analytics.tracks.recordEvent( 'calypso_contact_information_form_submit', tracksEventObject );
 		this.setState( { submissionCount: this.state.submissionCount + 1 } );
