@@ -25,8 +25,8 @@ import PostItem from 'blocks/post-item';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { isMultiSelectEnabled } from 'state/ui/post-type-list/selectors';
 import {
-	getSitePostsForQueryIgnoringPage,
-	isRequestingSitePostsForQuery,
+	getPostsForQueryIgnoringPage,
+	isRequestingPostsForQuery,
 } from 'state/posts/selectors';
 import Button from 'components/button';
 import Count from 'components/count';
@@ -182,13 +182,13 @@ function mapStateToProps( state, { author } ) {
 
 	return {
 		adminUrl: getSiteAdminUrl( state, siteId, 'plugins.php?plugin_status=upgrade' ),
-		drafts: getSitePostsForQueryIgnoringPage( state, siteId, draftsQuery ),
+		drafts: getPostsForQueryIgnoringPage( state, siteId, draftsQuery ),
 		draftCount: getAllPostCount( state, siteId, 'post', 'draft' ),
 		draftsQuery,
 		hasMinimumJetpackVersion: siteHasMinimumJetpackVersion( state, siteId ),
 		isJetpack: isJetpackSite( state, siteId ),
 		isMultiSelect: isMultiSelectEnabled( state ),
-		loadingDrafts: isRequestingSitePostsForQuery( state, siteId, draftsQuery ),
+		loadingDrafts: isRequestingPostsForQuery( state, siteId, draftsQuery ),
 		myDraftCount: getMyPostCount( state, siteId, 'post', 'draft' ),
 		newPostPath: getEditorNewPostPath( state, siteId ),
 		siteId,

@@ -17,9 +17,9 @@ import QueryPosts from 'components/data/query-posts';
 import { DEFAULT_POST_QUERY } from 'lib/query-manager/post/constants';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import {
-	isRequestingSitePostsForQueryIgnoringPage,
-	getSitePostsForQueryIgnoringPage,
-	getSitePostsLastPageForQuery,
+	isRequestingPostsForQueryIgnoringPage,
+	getPostsForQueryIgnoringPage,
+	getPostsLastPageForQuery,
 } from 'state/posts/selectors';
 import PostItem from 'blocks/post-item';
 import PostTypeListEmptyContent from './empty-content';
@@ -194,12 +194,12 @@ class PostTypeList extends Component {
 
 export default connect( ( state, ownProps ) => {
 	const siteId = getSelectedSiteId( state );
-	const lastPage = getSitePostsLastPageForQuery( state, siteId, ownProps.query );
+	const lastPage = getPostsLastPageForQuery( state, siteId, ownProps.query );
 
 	return {
 		siteId,
-		posts: getSitePostsForQueryIgnoringPage( state, siteId, ownProps.query ),
-		isRequestingPosts: isRequestingSitePostsForQueryIgnoringPage( state, siteId, ownProps.query ),
+		posts: getPostsForQueryIgnoringPage( state, siteId, ownProps.query ),
+		isRequestingPosts: isRequestingPostsForQueryIgnoringPage( state, siteId, ownProps.query ),
 		lastPage,
 	};
 } )( PostTypeList );
