@@ -35,7 +35,6 @@ import JetpackLogo from 'components/jetpack-logo';
 import { isPersonal, isPremium, isBusiness } from 'lib/products-values';
 import { getCurrentUser } from 'state/current-user/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
-import { getCurrentLayoutFocus } from 'state/ui/layout-focus/selectors';
 import { setNextLayoutFocus, setLayoutFocus } from 'state/ui/layout-focus/actions';
 import {
 	canCurrentUser,
@@ -84,15 +83,6 @@ export class MySitesSidebar extends Component {
 		window.scrollTo( 0, 0 );
 	};
 
-	onPreviewSite = event => {
-		const { site } = this.props;
-		analytics.ga.recordEvent( 'Sidebar', 'Clicked View Site' );
-		if ( site.is_previewable && ! event.metaKey && ! event.ctrlKey ) {
-			event.preventDefault();
-			this.props.setLayoutFocus( 'preview' );
-		}
-	};
-
 	onViewSiteClick = event => {
 		const { isPreviewable, siteSuffix } = this.props;
 
@@ -130,10 +120,6 @@ export class MySitesSidebar extends Component {
 	};
 
 	isItemLinkSelected( paths ) {
-		if ( this.props.isPreviewShowing ) {
-			return false;
-		}
-
 		if ( ! Array.isArray( paths ) ) {
 			paths = [ paths ];
 		}
@@ -674,11 +660,7 @@ export class MySitesSidebar extends Component {
 		return (
 			<Sidebar>
 				<SidebarRegion>
-					<CurrentSite
-						allSitesPath={ this.props.allSitesPath }
-						isPreviewShowing={ this.props.isPreviewShowing }
-						onClick={ this.onPreviewSite }
-					/>
+					<CurrentSite allSitesPath={ this.props.allSitesPath } />
 					{ this.renderSidebarMenus() }
 				</SidebarRegion>
 				<SidebarFooter>{ this.addNewSite() }</SidebarFooter>
@@ -701,8 +683,6 @@ function mapStateToProps( state ) {
 		( isJetpackModuleActive( state, siteId, 'sharedaddy' ) &&
 			! isJetpackMinimumVersion( state, siteId, '3.4-dev' ) );
 
-	const isPreviewShowing = getCurrentLayoutFocus( state ) === 'preview';
-
 	const transferStatus = getAutomatedTransferStatus( state, siteId );
 	const hasSitePendingAT = hasSitePendingAutomatedTransfer( state, siteId );
 
@@ -719,7 +699,6 @@ function mapStateToProps( state ) {
 		isDomainOnly: isDomainOnlySite( state, selectedSiteId ),
 		isJetpack,
 		isPreviewable: isSitePreviewable( state, selectedSiteId ),
-		isPreviewShowing,
 		isSharingEnabledOnJetpackSite,
 		isSiteAutomatedTransfer: !! isSiteAutomatedTransfer( state, selectedSiteId ),
 		siteId,
