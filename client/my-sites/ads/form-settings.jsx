@@ -335,6 +335,14 @@ class AdsFormSettings extends Component {
 					>
 						{ translate( 'Second ad below post' ) }
 					</CompactFormToggle>
+					<br />
+					<CompactFormToggle
+						checked={ !! this.state.display_options.sidebar }
+						disabled={ this.state.isLoading }
+						onChange={ this.handleDisplayToggle( 'sidebar' ) }
+					>
+						{ translate( 'Sidebar' ) }
+					</CompactFormToggle>
 				</FormFieldset>
 			</div>
 		);
