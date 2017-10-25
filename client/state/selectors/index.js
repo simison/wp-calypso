@@ -39,6 +39,7 @@ export getContactDetailsCache from './get-contact-details-cache';
 export getContactDetailsExtraCache from './get-contact-details-extra-cache';
 export getCurrentLocaleSlug from './get-current-locale-slug';
 export getCurrentPlanPurchaseId from './get-current-plan-purchase-id';
+export getCurrentRoute from './get-current-route';
 export getCurrentUserPaymentMethods from './get-current-user-payment-methods';
 export getImageEditorIsGreaterThanMinimumDimensions from './get-image-editor-is-greater-than-minimum-dimensions';
 export getImageEditorOriginalAspectRatio from './get-image-editor-original-aspect-ratio';
