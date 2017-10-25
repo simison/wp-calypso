@@ -109,7 +109,7 @@ class PaymentBox extends PureComponent {
 	}
 
 	getCardTitle() {
-		if ( abtest( 'checkoutPaymentMethodTabs' ) === 'tabs' ) {
+		if ( true || abtest( 'checkoutPaymentMethodTabs' ) === 'tabs' ) {
 			const formatHeaderClass = 'formatted-header',
 				formatHeaderTitleClass = 'formatted-header__title';
 
@@ -130,7 +130,7 @@ class PaymentBox extends PureComponent {
 	}
 
 	getSectionNav() {
-		if ( abtest( 'checkoutPaymentMethodTabs' ) === 'tabs' ) {
+		if ( true || abtest( 'checkoutPaymentMethodTabs' ) === 'tabs' ) {
 			const titleText = this.props.currentPaymentMethod
 				? translate( 'Pay with %(paymentMethod)s', {
 						args: {

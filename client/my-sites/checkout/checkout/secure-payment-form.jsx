@@ -61,7 +61,7 @@ const SecurePaymentForm = createReactClass( {
 		let i;
 		const primary = 0,
 			secondary = 1;
-		const tabsEnabled = abtest( 'checkoutPaymentMethodTabs' ) === 'tabs';
+		const tabsEnabled = true || abtest( 'checkoutPaymentMethodTabs' ) === 'tabs';
 
 		if ( isPaidForFullyInCredits( cart ) ) {
 			return 'credits';
@@ -193,7 +193,7 @@ const SecurePaymentForm = createReactClass( {
 	},
 
 	renderCreditCardPaymentBox() {
-		const tabsEnabled = abtest( 'checkoutPaymentMethodTabs' ) === 'tabs';
+		const tabsEnabled = true || abtest( 'checkoutPaymentMethodTabs' ) === 'tabs';
 		return (
 			<PaymentBox
 				classSet="credit-card-payment-box"
@@ -219,7 +219,7 @@ const SecurePaymentForm = createReactClass( {
 	},
 
 	renderPayPalPaymentBox() {
-		const tabsEnabled = abtest( 'checkoutPaymentMethodTabs' ) === 'tabs';
+		const tabsEnabled = true || abtest( 'checkoutPaymentMethodTabs' ) === 'tabs';
 		return (
 			<PaymentBox
 				classSet="paypal-payment-box"
