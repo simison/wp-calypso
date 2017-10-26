@@ -17,6 +17,7 @@ import {
 	includes,
 	indexOf,
 	intersection,
+	isArray,
 	isEqual,
 	kebabCase,
 	last,
@@ -30,6 +31,7 @@ import {
  * Internal dependencies
  */
 import { getContactDetailsCache } from 'state/selectors';
+import { getCountryStates } from 'state/country-states/selectors';
 import { updateContactDetailsCache } from 'state/domains/management/actions';
 import QueryContactDetailsCache from 'components/data/query-contact-details-cache';
 import { CountrySelect, Input, HiddenInput } from 'my-sites/domains/components/form';
@@ -190,7 +192,6 @@ export class DomainDetailsForm extends PureComponent {
 		if ( ! this.needsFax() ) {
 			delete form.fax;
 		}
-
 		this.setState( { form } );
 	};
 
@@ -393,6 +394,7 @@ export class DomainDetailsForm extends PureComponent {
 	}
 
 	renderDomainContactDetailsFields() {
+		const { hasCountryStates } = this.props;
 		const countryCode = this.getCountryCode();
 		return (
 			<div className="checkout__domain-contact-details-fields">
@@ -405,6 +407,7 @@ export class DomainDetailsForm extends PureComponent {
 					<RegionAddressFieldsets
 						getFieldProps={ this.getFieldProps }
 						countryCode={ countryCode }
+						hasCountryStates={ hasCountryStates }
 						shouldAutoFocusAddressField={ this.shouldAutoFocusAddressField }
 					/>
 				) }
@@ -494,6 +497,7 @@ export class DomainDetailsForm extends PureComponent {
 	};
 
 	recordSubmit() {
+		const { contactDetails } = this.props;
 		const errors = formState.getErrorMessages( this.state.form );
 		const tracksEventObject = reduce(
 			formState.getErrorMessages( this.state.form ),
@@ -509,6 +513,11 @@ export class DomainDetailsForm extends PureComponent {
 
 		analytics.tracks.recordEvent( 'calypso_contact_information_form_submit', tracksEventObject );
 		this.setState( { submissionCount: this.state.submissionCount + 1 } );
+
+		analytics.tracks.recordEvent(
+			'calypso_contact_information_form_submit_details',
+			pick( contactDetails, [ 'city', 'countryCode', 'state', 'postalCode' ] )
+		);
 	}
 
 	finish() {
@@ -588,8 +597,14 @@ export class DomainDetailsFormContainer extends PureComponent {
 
 export default connect(
 	state => {
+		const contactDetails = getContactDetailsCache( state );
+		const hasCountryStates =
+			contactDetails && contactDetails.countryCode
+				? isArray( getCountryStates( state, contactDetails.countryCode ) )
+				: false;
 		return {
-			contactDetails: getContactDetailsCache( state ),
+			contactDetails,
+			hasCountryStates,
 		};
 	},
 	{ updateContactDetailsCache }
