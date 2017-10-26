@@ -1344,6 +1344,7 @@ initialize {
                                   "children": Array [
                                     Object {
                                       "attribs": Object {
+                                        "eventname": "calypso_jpc_plans_chat_initiated",
                                         "label": "Need help?",
                                       },
                                       "children": Array [
@@ -1583,6 +1584,7 @@ initialize {
                                 "children": Array [
                                   Object {
                                     "attribs": Object {
+                                      "eventname": "calypso_jpc_plans_chat_initiated",
                                       "label": "Need help?",
                                     },
                                     "children": Array [
@@ -2799,6 +2801,7 @@ initialize {
                               "children": Array [
                                 Object {
                                   "attribs": Object {
+                                    "eventname": "calypso_jpc_plans_chat_initiated",
                                     "label": "Need help?",
                                   },
                                   "children": Array [
@@ -5326,6 +5329,7 @@ initialize {
                                 "children": Array [
                                   Object {
                                     "attribs": Object {
+                                      "eventname": "calypso_jpc_plans_chat_initiated",
                                       "label": "Need help?",
                                     },
                                     "children": Array [
@@ -5565,6 +5569,7 @@ initialize {
                               "children": Array [
                                 Object {
                                   "attribs": Object {
+                                    "eventname": "calypso_jpc_plans_chat_initiated",
                                     "label": "Need help?",
                                   },
                                   "children": Array [
@@ -6781,6 +6786,7 @@ initialize {
                             "children": Array [
                               Object {
                                 "attribs": Object {
+                                  "eventname": "calypso_jpc_plans_chat_initiated",
                                   "label": "Need help?",
                                 },
                                 "children": Array [
@@ -9509,6 +9515,7 @@ initialize {
                                 "children": Array [
                                   Object {
                                     "attribs": Object {
+                                      "eventname": "calypso_jpc_plans_chat_initiated",
                                       "label": "Need help?",
                                     },
                                     "children": Array [
@@ -9748,6 +9755,7 @@ initialize {
                               "children": Array [
                                 Object {
                                   "attribs": Object {
+                                    "eventname": "calypso_jpc_plans_chat_initiated",
                                     "label": "Need help?",
                                   },
                                   "children": Array [
@@ -10964,6 +10972,7 @@ initialize {
                             "children": Array [
                               Object {
                                 "attribs": Object {
+                                  "eventname": "calypso_jpc_plans_chat_initiated",
                                   "label": "Need help?",
                                 },
                                 "children": Array [
@@ -13491,6 +13500,7 @@ initialize {
                               "children": Array [
                                 Object {
                                   "attribs": Object {
+                                    "eventname": "calypso_jpc_plans_chat_initiated",
                                     "label": "Need help?",
                                   },
                                   "children": Array [
@@ -13730,6 +13740,7 @@ initialize {
                             "children": Array [
                               Object {
                                 "attribs": Object {
+                                  "eventname": "calypso_jpc_plans_chat_initiated",
                                   "label": "Need help?",
                                 },
                                 "children": Array [
@@ -14946,6 +14957,7 @@ initialize {
                           "children": Array [
                             Object {
                               "attribs": Object {
+                                "eventname": "calypso_jpc_plans_chat_initiated",
                                 "label": "Need help?",
                               },
                               "children": Array [
@@ -17672,6 +17684,7 @@ initialize {
                               "children": Array [
                                 Object {
                                   "attribs": Object {
+                                    "eventname": "calypso_jpc_plans_chat_initiated",
                                     "label": "Need help?",
                                   },
                                   "children": Array [
@@ -17911,6 +17924,7 @@ initialize {
                             "children": Array [
                               Object {
                                 "attribs": Object {
+                                  "eventname": "calypso_jpc_plans_chat_initiated",
                                   "label": "Need help?",
                                 },
                                 "children": Array [
@@ -19127,6 +19141,7 @@ initialize {
                           "children": Array [
                             Object {
                               "attribs": Object {
+                                "eventname": "calypso_jpc_plans_chat_initiated",
                                 "label": "Need help?",
                               },
                               "children": Array [
@@ -21654,6 +21669,7 @@ initialize {
                             "children": Array [
                               Object {
                                 "attribs": Object {
+                                  "eventname": "calypso_jpc_plans_chat_initiated",
                                   "label": "Need help?",
                                 },
                                 "children": Array [
@@ -21893,6 +21909,7 @@ initialize {
                           "children": Array [
                             Object {
                               "attribs": Object {
+                                "eventname": "calypso_jpc_plans_chat_initiated",
                                 "label": "Need help?",
                               },
                               "children": Array [
@@ -23109,6 +23126,7 @@ initialize {
                         "children": Array [
                           Object {
                             "attribs": Object {
+                              "eventname": "calypso_jpc_plans_chat_initiated",
                               "label": "Need help?",
                             },
                             "children": Array [
