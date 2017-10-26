@@ -47,7 +47,31 @@ export function revisions( state = {}, action ) {
 	return state;
 }
 
+// @TODO ensure no rehydration
+export function selection( state = {}, action ) {
+	switch ( action.type ) {
+		case 'POST_REVISIONS_SELECT': {
+			const { basePostId, siteId, postId } = action;
+			return {
+				...state,
+				basePostId,
+				siteId,
+				postId,
+			};
+		}
+		case 'POST_REVISIONS_TOGGLE_VISIBILITY': {
+			return {
+				...state,
+				showing: ! state.showing,
+			};
+		}
+		default:
+			return state;
+	}
+}
+
 export default combineReducers( {
 	requesting,
 	revisions,
+	selection,
 } );

@@ -6,43 +6,23 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { localize } from 'i18n-calypso';
-import { flow } from 'lodash';
+import { flow, head } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import { recordTracksEvent } from 'state/analytics/actions';
-import {
-	NESTED_SIDEBAR_NONE,
-	NESTED_SIDEBAR_REVISIONS,
-	NestedSidebarPropType,
-} from 'post-editor/editor-sidebar/constants';
+import EditorRevisionsList from 'post-editor/editor-revisions-list';
+import Popover from 'components/popover';
 
 class HistoryButton extends PureComponent {
 	toggleShowing = () => {
-		const {
-			isSidebarOpened,
-			nestedSidebar,
-			selectRevision,
-			setNestedSidebar,
-			toggleSidebar,
-		} = this.props;
-
-		// hide revisions if visible
-		if ( nestedSidebar === NESTED_SIDEBAR_REVISIONS ) {
-			setNestedSidebar( NESTED_SIDEBAR_NONE );
-			return;
-		}
+		const { revisions, selectedRevision, selectRevision } = this.props;
 
 		// otherwise, show revisions...
 		this.trackPostRevisionsOpen();
-		selectRevision( null );
-		setNestedSidebar( NESTED_SIDEBAR_REVISIONS );
 
-		// and open the sidebar if it's not open already.
-		if ( ! isSidebarOpened ) {
-			toggleSidebar();
-		}
+		selectRevision( selectedRevision ? null : head( revisions ) || null );
 	};
 
 	trackPostRevisionsOpen() {
@@ -52,25 +32,37 @@ class HistoryButton extends PureComponent {
 	}
 
 	render() {
+		const { loadRevision, selectRevision, selectedRevisionId } = this.props;
 		return (
 			<div className="editor-ground-control__history">
 				<button
 					className="editor-ground-control__save button is-link"
 					onClick={ this.toggleShowing }
+					ref="historyPopoverButton"
 				>
 					{ this.props.translate( 'History' ) }
 				</button>
+				<Popover
+					isVisible={ this.props.showingRevisions }
+					context={ this.refs && this.refs.historyPopoverButton }
+				>
+					<EditorRevisionsList
+						loadRevision={ loadRevision }
+						selectedRevisionId={ selectedRevisionId }
+						selectRevision={ selectRevision }
+					/>
+					{ this.props.selectedRevisionId }
+				</Popover>
 			</div>
 		);
 	}
 }
 
 HistoryButton.PropTypes = {
-	isSidebarOpened: PropTypes.bool,
-	nestedSidebar: NestedSidebarPropType,
+	revisions: PropTypes.array,
+	selectedRevision: PropTypes.func,
 	selectRevision: PropTypes.func,
-	setNestedSidebar: PropTypes.func,
-	toggleSidebar: PropTypes.func,
+	showingRevisions: PropTypes.bool,
 	translate: PropTypes.func,
 };
 

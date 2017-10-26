@@ -4,6 +4,7 @@
  */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { get, identity, noop } from 'lodash';
 import moment from 'moment';
 import page from 'page';
@@ -203,16 +204,7 @@ export class EditorGroundControl extends PureComponent {
 	};
 
 	renderGroundControlQuickSaveButtons() {
-		const {
-			isSaving,
-			isSidebarOpened,
-			nestedSidebar,
-			post,
-			selectRevision,
-			setNestedSidebar,
-			toggleSidebar,
-			translate,
-		} = this.props;
+		const { isSaving, post, revisions, selectRevision, showingRevisions, translate } = this.props;
 
 		const isSaveAvailable = this.isSaveAvailable();
 		const showingStatusLabel = this.shouldShowStatusLabel();
@@ -249,11 +241,9 @@ export class EditorGroundControl extends PureComponent {
 				) }
 				{ hasRevisions && (
 					<HistoryButton
+						revisions={ revisions }
+						showingRevisions={ showingRevisions }
 						selectRevision={ selectRevision }
-						setNestedSidebar={ setNestedSidebar }
-						toggleSidebar={ toggleSidebar }
-						isSidebarOpened={ isSidebarOpened }
-						nestedSidebar={ nestedSidebar }
 					/>
 				) }
 			</div>
@@ -355,4 +345,10 @@ export class EditorGroundControl extends PureComponent {
 	}
 }
 
-export default localize( EditorGroundControl );
+const stateToProps = state => ( {
+	revisions: get( state, 'posts.revisions.revisions' ),
+	selectedRevisionId: get( state, 'posts.revisions.selection.postId' ),
+	showingRevisions: get( state, 'posts.revisions.selection.showing' ),
+} );
+
+export default connect( stateToProps )( localize( EditorGroundControl ) );
