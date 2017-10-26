@@ -18,7 +18,7 @@ import {
 	HAPPYCHAT_INITIALIZE,
 	HAPPYCHAT_SEND_USER_INFO,
 	HAPPYCHAT_SEND_MESSAGE,
-	HAPPYCHAT_SET_MESSAGE,
+	HAPPYCHAT_SET_CURRENT_MESSAGE,
 	HAPPYCHAT_TRANSCRIPT_REQUEST,
 	HELP_CONTACT_FORM_SITE_SELECT,
 	ROUTE_SET,
@@ -40,10 +40,12 @@ import {
 	SITE_SETTINGS_SAVE_SUCCESS,
 } from 'state/action-types';
 import { receiveChatTranscript } from './connection/actions';
-import { wasHappychatRecentlyActive, isHappychatChatAssigned, getGroups } from './selectors';
+import { getGroups } from './selectors';
 import getGeoLocation from 'state/happychat/selectors/get-geolocation';
-import isHappychatConnectionUninitialized from 'state/happychat/selectors/is-happychat-connection-uninitialized';
+import isHappychatChatAssigned from 'state/happychat/selectors/is-happychat-chat-assigned';
 import isHappychatClientConnected from 'state/happychat/selectors/is-happychat-client-connected';
+import isHappychatConnectionUninitialized from 'state/happychat/selectors/is-happychat-connection-uninitialized';
+import wasHappychatRecentlyActive from 'state/happychat/selectors/was-happychat-recently-active';
 import { getCurrentUser, getCurrentUserLocale } from 'state/current-user/selectors';
 import { getHelpSelectedSite } from 'state/help/selectors';
 import debugFactory from 'debug';
@@ -117,7 +119,7 @@ export const connectChat = ( connection, { getState, dispatch } ) => {
 
 	return startSession()
 		.then( ( { session_id, geo_location } ) => {
-			happychatUser.geo_location = geo_location;
+			happychatUser.geoLocation = geo_location;
 			return sign( { user, session_id } );
 		} )
 		.then( ( { jwt } ) => connection.init( url, dispatch, { jwt, ...happychatUser } ) )
@@ -144,9 +146,9 @@ const onMessageChange = ( connection, message ) => {
 	}
 };
 
-const sendMessage = ( connection, message ) => {
+const sendMessage = ( connection, { message, meta } ) => {
 	debug( 'sending message', message );
-	connection.send( message );
+	connection.send( message, meta );
 	connection.notTyping();
 };
 
@@ -333,10 +335,10 @@ export default function( connection = null ) {
 				break;
 
 			case HAPPYCHAT_SEND_MESSAGE:
-				sendMessage( connection, action.message );
+				sendMessage( connection, action );
 				break;
 
-			case HAPPYCHAT_SET_MESSAGE:
+			case HAPPYCHAT_SET_CURRENT_MESSAGE:
 				onMessageChange( connection, action.message );
 				break;
 

@@ -1,23 +1,25 @@
+/** @format */
+
 /**
  * External dependencies
- *
- * @format
  */
-
 import classNames from 'classnames';
 import React from 'react';
 import createReactClass from 'create-react-class';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
+import { localize } from 'i18n-calypso';
+
 /**
  * Internal dependencies
  */
-import { setChatMessage } from 'state/happychat/actions';
 import { sendChatMessage } from 'state/happychat/connection/actions';
+import { setCurrentMessage } from 'state/happychat/ui/actions';
+import getCurrentMessage from 'state/happychat/selectors/get-happychat-current-message';
 import { canUserSendMessages } from 'state/happychat/selectors';
 import { when, forEach, compose, propEquals, call, prop } from './functional';
 import scrollbleed from './scrollbleed';
-import { translate } from 'i18n-calypso';
 
 // helper function for detecting when a DOM event keycode is pressed
 const returnPressed = propEquals( 'which', 13 );
@@ -31,8 +33,24 @@ export const Composer = createReactClass( {
 	displayName: 'Composer',
 	mixins: [ scrollbleed ],
 
+	propTypes: {
+		disabled: PropTypes.bool,
+		message: PropTypes.string,
+		onFocus: PropTypes.func,
+		onSendChatMessage: PropTypes.func,
+		onUpdateChatMessage: PropTypes.func,
+		translate: PropTypes.func, // localize HOC
+	},
+
 	render() {
-		const { disabled, message, onUpdateChatMessage, onSendChatMessage, onFocus } = this.props;
+		const {
+			disabled,
+			message,
+			onFocus,
+			onSendChatMessage,
+			onUpdateChatMessage,
+			translate,
+		} = this.props;
 		const sendMessage = when( () => ! isEmpty( message ), () => onSendChatMessage( message ) );
 		const onChange = compose( prop( 'target.value' ), onUpdateChatMessage );
 		const onKeyDown = when( returnPressed, forEach( preventDefault, sendMessage ) );
@@ -70,16 +88,16 @@ export const Composer = createReactClass( {
 
 const mapState = state => ( {
 	disabled: ! canUserSendMessages( state ),
-	message: state.happychat.message,
+	message: getCurrentMessage( state ),
 } );
 
 const mapDispatch = dispatch => ( {
 	onUpdateChatMessage( message ) {
-		dispatch( setChatMessage( message ) );
+		dispatch( setCurrentMessage( message ) );
 	},
 	onSendChatMessage( message ) {
 		dispatch( sendChatMessage( message ) );
 	},
 } );
 
-export default connect( mapState, mapDispatch )( Composer );
+export default connect( mapState, mapDispatch )( localize( Composer ) );

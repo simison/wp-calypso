@@ -42,14 +42,6 @@ export default {
 		defaultVariation: 'original',
 		localeTargets: 'any',
 	},
-	newSiteWithJetpack: {
-		datestamp: '20170419',
-		variations: {
-			showNewJetpackSite: 50,
-			onlyDotComSites: 50,
-		},
-		defaultVariation: 'onlyDotComSites',
-	},
 	chatOfferOnCancel: {
 		datestamp: '20170421',
 		variations: {
@@ -91,6 +83,16 @@ export default {
 		datestamp: '20171010',
 		variations: {
 			shortest: 50,
+			original: 50,
+		},
+		defaultVariation: 'original',
+		allowExistingUsers: true,
+		localeTargets: 'any',
+	},
+	checkoutPaymentMethodTabs: {
+		datestamp: '20171019',
+		variations: {
+			tabs: 50,
 			original: 50,
 		},
 		defaultVariation: 'original',

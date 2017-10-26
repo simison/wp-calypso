@@ -21,7 +21,7 @@ import {
 	setHappychatAvailable,
 	setReconnecting,
 } from 'state/happychat/connection/actions';
-import { setHappychatChatStatus } from 'state/happychat/actions';
+import { setHappychatChatStatus } from 'state/happychat/chat/actions';
 
 const debug = require( 'debug' )( 'calypso:happychat:connection' );
 
@@ -31,7 +31,7 @@ const buildConnection = socket =>
 		: socket; // If socket is not an url, use it directly. Useful for testing.
 
 class Connection {
-	init( url, dispatch, { signer_user_id, jwt, locale, groups, geo_location } ) {
+	init( url, dispatch, { signer_user_id, jwt, locale, groups, geoLocation } ) {
 		if ( this.openSocket ) {
 			debug( 'socket is already connected' );
 			return this.openSocket;
@@ -45,7 +45,7 @@ class Connection {
 				.once( 'connect', () => debug( 'connected' ) )
 				.on( 'token', handler => handler( { signer_user_id, jwt, locale, groups } ) )
 				.on( 'init', () => {
-					dispatch( setConnected( { signer_user_id, locale, groups, geo_location } ) );
+					dispatch( setConnected( { signer_user_id, locale, groups, geoLocation } ) );
 					// TODO: There's no need to dispatch a separate action to request a transcript.
 					// The HAPPYCHAT_CONNECTED action should have its own middleware handler that does this.
 					dispatch( requestChatTranscript() );
@@ -79,9 +79,9 @@ class Connection {
 		);
 	}
 
-	send( message ) {
+	send( message, meta = {} ) {
 		this.openSocket.then(
-			socket => socket.emit( 'message', { text: message, id: uuid() } ),
+			socket => socket.emit( 'message', { text: message, id: uuid(), meta } ),
 			e => debug( 'failed to send message', e )
 		);
 	}
