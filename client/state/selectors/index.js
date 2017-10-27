@@ -43,6 +43,7 @@ export getCurrentUserPaymentMethods from './get-current-user-payment-methods';
 export getImageEditorIsGreaterThanMinimumDimensions from './get-image-editor-is-greater-than-minimum-dimensions';
 export getImageEditorOriginalAspectRatio from './get-image-editor-original-aspect-ratio';
 export getJetpackConnectionStatus from './get-jetpack-connection-status';
+export getJetpackConnectRedirectAfterAuth from './get-jetpack-connect-redirect-after-auth';
 export getJetpackJumpstartStatus from './get-jetpack-jumpstart-status';
 export getJetpackModule from './get-jetpack-module';
 export getJetpackModules from './get-jetpack-modules';
