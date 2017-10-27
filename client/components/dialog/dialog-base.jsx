@@ -1,14 +1,27 @@
+/** @format */
 /**
  * External dependencies
- *
- * @format
  */
-
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 import classnames from 'classnames';
 
 class DialogBase extends Component {
+	static propTypes = {
+		additionalClassNames: PropTypes.oneOfType( [ PropTypes.object, PropTypes.string ] ),
+		autoFocus: PropTypes.bool,
+		baseClassName: PropTypes.string,
+		buttons: PropTypes.array,
+		children: PropTypes.element,
+		className: PropTypes.string,
+		isFullScreen: PropTypes.bool,
+		isVisible: PropTypes.bool,
+		label: PropTypes.string,
+		leaveTimeout: PropTypes.number,
+		onDialogClose: PropTypes.func,
+	};
+
 	static defaultProps = {
 		baseClassName: 'dialog',
 		isFullScreen: true,
