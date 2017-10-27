@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
-import { isEmpty, includes } from 'lodash';
+import { isEmpty, includes, replace } from 'lodash';
 
 /**
  * Internal dependencies
@@ -29,12 +29,13 @@ import { getTld } from 'lib/domains';
 class SiteOrDomain extends Component {
 	getDomainProductSlug( domain ) {
 		const tld = getTld( domain );
+		const tldSlug = replace( tld, /\./g, 'dot' );
 
-		if ( includes( [ 'com', 'net', 'org' ], tld ) ) {
+		if ( includes( [ 'com', 'net', 'org' ], tldSlug ) ) {
 			return 'domain_reg';
 		}
 
-		return `dot${ tld }_domain`;
+		return `dot${ tldSlug }_domain`;
 	}
 
 	getDomainName() {
