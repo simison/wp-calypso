@@ -66,7 +66,6 @@
 	}
 }
 
-
 // Duplicating `.table` for increased specificity
 .order-details__totals.table.table {
 	margin: 16px -24px;
@@ -121,4 +120,8 @@
 .order-details__card .form-setting-explanation {
 	margin: -8px 0 16px;
 	text-align: right;
+}
+
+&.order-details__dialog.dialog__content {
+	overflow: visible;
 }
