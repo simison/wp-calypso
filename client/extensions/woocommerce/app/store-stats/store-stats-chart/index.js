@@ -64,7 +64,7 @@ class StoreStatsChart extends Component {
 
 	createTooltipDate = item => {
 		const { unit } = this.props;
-		const dateFormat = UNITS[ unit ].sinceFormat;
+		const dateFormat = UNITS[ unit ].shortFormat;
 		const date = moment( item.period );
 		if ( unit === 'week' ) {
 			return `${ date.subtract( 6, 'days' ).format( dateFormat ) } - ${ moment(
@@ -152,7 +152,7 @@ class StoreStatsChart extends Component {
 										value={ `${ deltaValue }%` }
 										className={ `${ delta.favorable } ${ delta.direction }` }
 										suffix={ `since ${ moment( delta.reference_period, periodFormat ).format(
-											UNITS[ unit ].sinceFormat
+											UNITS[ unit ].shortFormat
 										) }` }
 									/>
 								</Tab>
