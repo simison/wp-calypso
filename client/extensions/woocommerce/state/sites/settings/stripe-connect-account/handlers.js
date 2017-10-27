@@ -14,6 +14,8 @@ import {
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_CREATE_COMPLETE,
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_REQUEST,
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_UPDATE,
+	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT,
+	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT_COMPLETE,
 } from 'woocommerce/state/action-types';
 
 export default {
@@ -22,6 +24,13 @@ export default {
 	],
 	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_REQUEST ]: [
 		dispatchRequest( handleAccountFetch, handleAccountFetchSuccess, handleAccountFetchFailure ),
+	],
+	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT ]: [
+		dispatchRequest(
+			handleAccountDisconnect,
+			handleAccountDisconnectSuccess,
+			handleAccountDisconnectFailure
+		),
 	],
 };
 
@@ -50,6 +59,33 @@ export function handleAccountCreateFailure( { dispatch }, action, error ) {
 	const { siteId } = action;
 	dispatch( {
 		type: WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_CREATE_COMPLETE,
+		error,
+		siteId,
+	} );
+}
+
+export function handleAccountDisconnect( { dispatch }, action ) {
+	const { siteId } = action;
+	dispatch(
+		request( siteId, action, '/wc/v1' ).post( 'connect/stripe/account/deauthorize', {
+			deauthorize: true,
+		} )
+	);
+}
+
+export function handleAccountDisconnectSuccess( store, action ) {
+	const { siteId } = action;
+
+	store.dispatch( {
+		type: WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT_COMPLETE,
+		siteId,
+	} );
+}
+
+export function handleAccountDisconnectFailure( { dispatch }, action, error ) {
+	const { siteId } = action;
+	dispatch( {
+		type: WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT_COMPLETE,
 		error,
 		siteId,
 	} );

@@ -84,6 +84,7 @@ describe( 'reducer', () => {
 				email: 'foo@bar.com',
 				error: '',
 				isActivated: false,
+				isDisconnecting: false,
 				isRequesting: false,
 			} );
 		} );
@@ -246,6 +247,7 @@ describe( 'reducer', () => {
 				error: '',
 				firstName: 'Foo',
 				isActivated: false,
+				isDisconnecting: false,
 				isRequesting: false,
 				lastName: 'Bar',
 				logo: 'http://bar.com/foo.png',

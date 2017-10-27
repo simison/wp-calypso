@@ -10,6 +10,7 @@
 import {
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_CREATE,
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_REQUEST,
+	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT,
 } from 'woocommerce/state/action-types';
 
 export function createAccount( siteId, email, countryCode ) {
@@ -17,6 +18,13 @@ export function createAccount( siteId, email, countryCode ) {
 		type: WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_CREATE,
 		countryCode,
 		email,
+		siteId,
+	};
+}
+
+export function disconnectAccount( siteId ) {
+	return {
+		type: WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT,
 		siteId,
 	};
 }

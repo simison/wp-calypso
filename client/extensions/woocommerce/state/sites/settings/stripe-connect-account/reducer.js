@@ -13,6 +13,8 @@ import {
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_CREATE_COMPLETE,
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_REQUEST,
 	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_UPDATE,
+	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT,
+	WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT_COMPLETE,
 } from 'woocommerce/state/action-types';
 
 /**
@@ -28,6 +30,7 @@ function connectAccountCreate( state = {} ) {
 		email: '',
 		firstName: '',
 		isActivated: false,
+		isDisconnecting: false,
 		isRequesting: true,
 		lastName: '',
 		logo: '',
@@ -47,6 +50,7 @@ function connectAccountCreateComplete( state = {}, action ) {
 		email: action.email || '',
 		error: action.error || '',
 		isActivated: false,
+		isDisconnecting: false,
 		isRequesting: false,
 	} );
 }
@@ -64,6 +68,7 @@ function connectAccountFetch( state = {} ) {
 		email: '',
 		firstName: '',
 		isActivated: false,
+		isDisconnecting: false,
 		isRequesting: true,
 		lastName: '',
 		logo: '',
@@ -85,9 +90,44 @@ function connectAccountFetchComplete( state = {}, action ) {
 		error: action.error || '',
 		firstName: action.firstName || '',
 		isActivated: action.isActivated || false,
+		isDisconnecting: false,
 		isRequesting: false,
 		lastName: action.lastName || '',
 		logo: action.logo || '',
+	} );
+}
+
+/**
+ * Updates state to indicate account disconnection request is in progress
+ *
+ * @param  {Object} state  Current state
+ * @return {Object}        Updated state
+ */
+function connectAccountDisconnect( state = {} ) {
+	return Object.assign( {}, state, {
+		isDisconnecting: true,
+	} );
+}
+
+/**
+ * Updates state after disconnection completes
+ *
+ * @param  {Object} state  Current state
+ * @param  {Object} action Action payload
+ * @return {Object}        Updated state
+ */
+function connectAccountDisconnectComplete( state = {}, action ) {
+	return Object.assign( {}, state, {
+		connectedUserID: '',
+		displayName: '',
+		email: '',
+		error: action.error || '',
+		firstName: '',
+		isActivated: false,
+		isDisconnecting: false,
+		isRequesting: false,
+		lastName: '',
+		logo: '',
 	} );
 }
 
@@ -96,4 +136,6 @@ export default createReducer( null, {
 	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_CREATE_COMPLETE ]: connectAccountCreateComplete,
 	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_REQUEST ]: connectAccountFetch,
 	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DETAILS_UPDATE ]: connectAccountFetchComplete,
+	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT ]: connectAccountDisconnect,
+	[ WOOCOMMERCE_SETTINGS_STRIPE_CONNECT_ACCOUNT_DISCONNECT_COMPLETE ]: connectAccountDisconnectComplete,
 } );
