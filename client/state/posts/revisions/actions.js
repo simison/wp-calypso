@@ -79,6 +79,6 @@ export const selectPostRevision = ( siteId, basePostId, postId ) => ( {
 	postId,
 } );
 
-export const togglePostRevisionVisibility = () => ( {
-	type: 'POST_REVISIONS_TOGGLE_VISIBILITY',
+export const togglePostRevisionsPopover = () => ( {
+	type: 'POST_REVISIONS_TOGGLE_POPOVER',
 } );

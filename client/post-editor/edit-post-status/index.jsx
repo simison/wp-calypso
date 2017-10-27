@@ -15,6 +15,7 @@ import Gridicon from 'gridicons';
  */
 import Button from 'components/button';
 import FormToggle from 'components/forms/form-toggle/compact';
+import Revisions from 'post-editor/editor-revisions';
 import postUtils from 'lib/posts/utils';
 import InfoPopover from 'components/info-popover';
 import siteUtils from 'lib/site/utils';
@@ -95,6 +96,9 @@ export class EditPostStatus extends Component {
 			canPublish = siteUtils.userCan( 'publish_posts', this.props.site );
 		}
 
+		const adminUrl =
+			this.props.site && this.props.site.options && this.props.site.options.admin_url;
+
 		return (
 			<div className="edit-post-status">
 				{ this.renderPostScheduling() }
@@ -142,6 +146,11 @@ export class EditPostStatus extends Component {
 						<Gridicon icon="undo" size={ 18 } /> { translate( 'Revert to draft' ) }
 					</Button>
 				) }
+				<Revisions
+					revisions={ this.props.post && this.props.post.revisions }
+					adminUrl={ adminUrl }
+					setNestedSidebar={ this.props.setNestedSidebar }
+				/>
 			</div>
 		);
 	}

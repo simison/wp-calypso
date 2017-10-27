@@ -4,7 +4,7 @@
  * @format
  */
 
-import { keyBy, merge } from 'lodash';
+import { get, head, keyBy, merge, nth } from 'lodash';
 
 /**
  * Internal dependencies
@@ -52,17 +52,29 @@ export function selection( state = {}, action ) {
 	switch ( action.type ) {
 		case 'POST_REVISIONS_SELECT': {
 			const { basePostId, siteId, postId } = action;
+
+			// @TODO use selector
+			const _revisions = get( state, 'posts.revisions.revisions', [] );
+
 			return {
 				...state,
-				basePostId,
+				basePostId: basePostId || head( _revisions ),
 				siteId,
-				postId,
+				postId: ( postId > basePostId && basePostId ) || nth( _revisions, 1 ),
 			};
 		}
-		case 'POST_REVISIONS_TOGGLE_VISIBILITY': {
+		default:
+			return state;
+	}
+}
+
+// @TODO ensure no rehydration
+export function ui( state = {}, action ) {
+	switch ( action.type ) {
+		case 'POST_REVISIONS_TOGGLE_POPOVER': {
 			return {
 				...state,
-				showing: ! state.showing,
+				popoverIsVisible: ! state.popoverIsVisible,
 			};
 		}
 		default:
@@ -74,4 +86,5 @@ export default combineReducers( {
 	requesting,
 	revisions,
 	selection,
+	ui,
 } );
