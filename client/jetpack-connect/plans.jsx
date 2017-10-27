@@ -26,13 +26,11 @@ import {
 	PLAN_JETPACK_BUSINESS,
 	PLAN_JETPACK_BUSINESS_MONTHLY,
 } from 'lib/plans/constants';
-import { getPlansBySite } from 'state/sites/plans/selectors';
 import { recordTracksEvent } from 'state/analytics/actions';
 import { getCurrentUser } from 'state/current-user/selectors';
 import { addItem } from 'lib/upgrades/actions';
 import { selectPlanInAdvance, goBackToWpAdmin, completeFlow } from 'state/jetpack-connect/actions';
 import QueryPlans from 'components/data/query-plans';
-import QuerySitePlans from 'components/data/query-site-plans';
 import { isRequestingPlans, getPlanBySlug } from 'state/plans/selectors';
 import { getSelectedSite } from 'state/ui/selectors';
 import { canCurrentUser, isRtl, isSiteOnPaidPlan } from 'state/selectors';
@@ -58,7 +56,6 @@ class Plans extends Component {
 	}
 
 	static propTypes = {
-		sitePlans: PropTypes.object.isRequired,
 		showJetpackFreePlan: PropTypes.bool,
 	};
 
@@ -271,9 +268,6 @@ class Plans extends Component {
 		return (
 			<div>
 				<QueryPlans />
-				{ this.props.selectedSite ? (
-					<QuerySitePlans siteId={ this.props.selectedSite.ID } />
-				) : null }
 				<PlansGrid
 					{ ...this.props }
 					basePlansPath={
@@ -315,7 +309,6 @@ export default connect(
 			selectedSiteSlug,
 			selectedPlan,
 			isAutomatedTransfer: selectedSite ? isSiteAutomatedTransfer( state, selectedSite.ID ) : false,
-			sitePlans: getPlansBySite( state, selectedSite ),
 			jetpackConnectAuthorize: getAuthorizationData( state ),
 			userId: user ? user.ID : null,
 			canPurchasePlans: selectedSite
