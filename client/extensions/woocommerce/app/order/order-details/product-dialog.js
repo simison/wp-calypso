@@ -50,6 +50,7 @@ class OrderFeeDialog extends Component {
 				name: item.name,
 				sku: item.sku,
 				price: item.price,
+				subtotal: item.price,
 				total: item.price,
 				quantity: 1,
 			} ) ),
