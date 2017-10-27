@@ -40,7 +40,7 @@ import QueryOlark from 'components/data/query-olark';
 import QueryTicketSupportConfiguration from 'components/data/query-ticket-support-configuration';
 import HelpUnverifiedWarning from '../help-unverified-warning';
 import {
-	sendChatMessage as sendHappychatMessage,
+	sendMessage as sendHappychatMessage,
 	sendNotTyping,
 	sendUserInfo,
 } from 'state/happychat/connection/actions';
