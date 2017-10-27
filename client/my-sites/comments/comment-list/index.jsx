@@ -25,7 +25,8 @@ import {
 import { removeNotice, successNotice } from 'state/notices/actions';
 import CommentDetail from 'blocks/comment-detail';
 import CommentDetailPlaceholder from 'blocks/comment-detail/comment-detail-placeholder';
-import CommentNavigation from '../comment-navigation';
+import CommentListHeader from 'my-sites/comments/comment-list/comment-list-header';
+import CommentNavigation from 'my-sites/comments/comment-navigation';
 import EmptyContent from 'components/empty-content';
 import Pagination from 'components/pagination';
 import QuerySiteCommentsList from 'components/data/query-site-comments-list';
@@ -402,7 +403,16 @@ export class CommentList extends Component {
 	};
 
 	render() {
-		const { isJetpack, isLoading, page, siteBlacklist, siteId, siteFragment, status } = this.props;
+		const {
+			isJetpack,
+			isLoading,
+			page,
+			postId,
+			siteBlacklist,
+			siteId,
+			siteFragment,
+			status,
+		} = this.props;
 		const { isBulkEdit, selectedComments } = this.state;
 
 		const validPage = this.isRequestedPageValid() ? page : 1;
@@ -429,6 +439,8 @@ export class CommentList extends Component {
 					/>
 				) }
 				{ ! isJetpack && <QuerySiteCommentsTree siteId={ siteId } status={ status } /> }
+
+				{ !! postId && <CommentListHeader postId={ postId } /> }
 
 				<CommentNavigation
 					commentsPage={ commentsPage }
