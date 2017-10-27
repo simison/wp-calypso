@@ -41,6 +41,7 @@ import QueryTicketSupportConfiguration from 'components/data/query-ticket-suppor
 import HelpUnverifiedWarning from '../help-unverified-warning';
 import {
 	sendChatMessage as sendHappychatMessage,
+	sendNotTyping,
 	sendUserInfo,
 } from 'state/happychat/connection/actions';
 import { openChat as openHappychat } from 'state/happychat/ui/actions';
@@ -146,6 +147,7 @@ class HelpContact extends React.Component {
 
 		this.props.sendUserInfo( howCanWeHelp, howYouFeel, site );
 		this.props.sendHappychatMessage( message, { includeInSummary: true } );
+		this.props.sendNotTyping( message );
 
 		analytics.tracks.recordEvent( 'calypso_help_live_chat_begin', {
 			site_plan_product_id: site ? site.plan.product_id : null,
@@ -766,6 +768,7 @@ export default connect(
 	{
 		openHappychat,
 		sendHappychatMessage,
+		sendNotTyping,
 		sendUserInfo,
 		askDirectlyQuestion,
 		initializeDirectly,
