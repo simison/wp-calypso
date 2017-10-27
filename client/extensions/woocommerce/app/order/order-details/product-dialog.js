@@ -90,7 +90,6 @@ class OrderFeeDialog extends Component {
 				onClose={ closeDialog }
 				className={ dialogClass }
 				buttons={ dialogButtons }
-				additionalClassNames="order-payment__dialog woocommerce"
 			>
 				<h1>{ translate( 'Add a product' ) }</h1>
 				<p>
