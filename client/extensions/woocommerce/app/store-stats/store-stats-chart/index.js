@@ -62,13 +62,25 @@ class StoreStatsChart extends Component {
 		} );
 	};
 
+	createTooltipDate = item => {
+		const { unit } = this.props;
+		const dateFormat = UNITS[ unit ].sinceFormat;
+		const date = moment( item.period );
+		if ( unit === 'week' ) {
+			return `${ date.subtract( 6, 'days' ).format( dateFormat ) } - ${ moment(
+				item.period
+			).format( dateFormat ) }`;
+		}
+		return date.format( dateFormat );
+	};
+
 	buildToolTipData = ( item, selectedTab ) => {
 		const value =
 			selectedTab.type === 'currency'
 				? formatCurrency( item[ selectedTab.attr ], item.currency )
 				: Math.round( item[ selectedTab.attr ] * 100 ) / 100;
 		const data = [
-			{ className: 'is-date-label', value: null, label: 'date range here' },
+			{ className: 'is-date-label', value: null, label: this.createTooltipDate( item ) },
 			{
 				value,
 				label: selectedTab.label,
@@ -77,7 +89,7 @@ class StoreStatsChart extends Component {
 		if ( selectedTab.attr === 'gross_sales' ) {
 			const netSalesTab = find( tabs, tab => tab.attr === 'net_sales' );
 			data.push( {
-				value: formatCurrency( item[ 'net_sales' ], item.currency ),
+				value: formatCurrency( item.net_sales, item.currency ),
 				label: netSalesTab.label,
 			} );
 		}
@@ -92,7 +104,7 @@ class StoreStatsChart extends Component {
 		return {
 			label: item[ chartFormat ],
 			value: item[ selectedTab.attr ],
-			nestedValue: selectedTab.attr === 'gross_sales' ? item[ 'net_sales' ] : null,
+			nestedValue: selectedTab.attr === 'gross_sales' ? item.net_sales : null,
 			data: item,
 			tooltipData: this.buildToolTipData( item, selectedTab ),
 			className,
