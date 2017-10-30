@@ -1,6 +1,9 @@
 /**
  * External dependencies
+ *
+ * @format
  */
+
 import config from 'config';
 
 /**
@@ -11,10 +14,6 @@ import { makeLayout } from 'controller';
 
 export default router => {
 	if ( config.isEnabled( 'hello-world' ) ) {
-		router(
-			'/hello-world',
-			helloDemo,
-			makeLayout
-		);
+		router( '/hello-world', helloDemo, makeLayout );
 	}
 };

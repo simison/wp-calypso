@@ -1,6 +1,9 @@
 /**
  * External dependencies
+ *
+ * @format
  */
+
 import HelloWorldPrimary from 'hello-world/main-primary';
 import HelloWorldSecondary from 'hello-world/main-secondary';
 
